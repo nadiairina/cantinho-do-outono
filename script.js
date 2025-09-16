@@ -22,11 +22,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const productsGrid = document.getElementById('bestsellers-list');
     const allProductsGrid = document.getElementById('all-products-list');
     const cartCountElement = document.querySelector('.cart-count');
-
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const cartIcon = document.querySelector('.cart-icon');
 
     // Função para atualizar a contagem do carrinho na interface
     const updateCartCount = () => {
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
         cartCountElement.textContent = cart.length;
     };
 
@@ -43,24 +43,56 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
         container.appendChild(productCard);
 
-        productCard.querySelector('.add-to-cart-btn').addEventListener('click', () => {
+        const addToCartBtn = productCard.querySelector('.add-to-cart-btn');
+        addToCartBtn.addEventListener('click', (e) => {
+            const productElement = e.target.closest('.product-card');
+            animateToCart(productElement);
             addToCart(product);
         });
     };
 
-    // Função para adicionar um produto ao carrinho
+    // Função para adicionar um produto ao carrinho (salva no localStorage)
     const addToCart = (product) => {
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
         const existingItem = cart.find(item => item.id === product.id);
+
         if (existingItem) {
-            // Se o produto já existe, apenas aumenta a quantidade
             existingItem.quantity++;
         } else {
-            // Se o produto não existe, adiciona-o com quantidade 1
             cart.push({ ...product, quantity: 1 });
         }
         localStorage.setItem('cart', JSON.stringify(cart));
         updateCartCount();
-        window.location.href = 'carrinho.html'; // Redireciona para a página do carrinho
+    };
+
+    // Animação de "voo" para o carrinho
+    const animateToCart = (productElement) => {
+        const productImg = productElement.querySelector('img');
+        const cartRect = cartIcon.getBoundingClientRect();
+        const imgRect = productImg.getBoundingClientRect();
+
+        const clone = productImg.cloneNode(true);
+        clone.classList.add('product-clone');
+        clone.style.left = `${imgRect.left}px`;
+        clone.style.top = `${imgRect.top}px`;
+        clone.style.width = `${imgRect.width}px`;
+        clone.style.height = `${imgRect.height}px`;
+
+        document.body.appendChild(clone);
+
+        // Força o navegador a recalcular os estilos para a transição
+        clone.offsetHeight;
+
+        // Calcula a posição do carrinho
+        document.documentElement.style.setProperty('--cart-x', `${cartRect.left - imgRect.left}px`);
+        document.documentElement.style.setProperty('--cart-y', `${cartRect.top - imgRect.top}px`);
+
+        clone.classList.add('fly-to-cart');
+
+        // Remove o clone depois da animação
+        setTimeout(() => {
+            clone.remove();
+        }, 800);
     };
 
     // Carregar e renderizar os produtos
@@ -69,13 +101,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await fetch('data/products.json');
             const products = await response.json();
 
-            // Renderizar os "Mais Vendidos" na página principal
             if (productsGrid) {
                 const bestsellers = products.filter(p => p.isBestseller);
                 bestsellers.forEach(product => renderProduct(product, productsGrid));
             }
 
-            // Renderizar todos os produtos na página de produtos
             if (allProductsGrid) {
                 products.forEach(product => renderProduct(product, allProductsGrid));
             }
