@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrinho de Compras - Cantinho do Outono</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="cart.css">
+</head>
+<body>
+
+    <header class="main-header">
+        <nav class="navbar">
+            <a href="index.html" class="logo">Cantinho do Outono</a>
+            <div class="nav-links" id="navLinks">
+                <a href="index.html">Início</a>
+                <a href="produtos.html">Produtos</a>
+                <a href="sobre-nos.html">Sobre Nós</a>
+                <a href="contactos.html">Contactos</a>
+            </div>
+            <div class="nav-icons">
+                <a href="carrinho.html" class="cart-icon">🛒<span class="cart-count">0</span></a>
+                <div class="hamburger-menu" id="hamburgerMenu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <section class="cart-section">
+        <h2>Seu Carrinho</h2>
+        <div class="cart-container">
+            <div id="cart-items">
+                </div>
+            <div id="cart-summary" class="cart-summary">
+                <h3>Resumo do Pedido</h3>
+                <p>Subtotal: <span id="subtotal">€0.00</span></p>
+                <p>Envio: <span id="shipping">Grátis</span></p>
+                <h4>Total: <span id="total">€0.00</span></h4>
+                <a href="#" class="cta-button checkout-button">Finalizar Compra</a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="main-footer">
+        <div class="footer-content">
+            <p>&copy; 2025 Cantinho do Outono. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="script.js" defer></script>
+    <script src="cart.js" defer></script>
+</body>
+</html>
