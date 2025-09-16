@@ -1,1 +1,398 @@
+/* Definição das variáveis de cor e espaçamento para facilitar a manutenção */
+:root {
+    --primary-color: #E67E22; /* Laranja - Cor principal para botões, links, etc. */
+    --secondary-color: #F5F5DC; /* Creme - Cor de fundo principal */
+    --text-color: #4F361F; /* Castanho escuro - Cor do texto e headers */
+    --light-grey: #f0f0f0; /* Cinzento claro para fundos de seções */
+    --card-bg: #ffffff; /* Fundo dos cartões de produto/categoria */
+    --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidade */
+    --border-radius: 12px; /* Cantos arredondados */
+    --padding-section: 4rem 5%; /* Espaçamento padrão para seções */
+}
 
+/* --- Estilos Globais e Tipografia --- */
+body {
+    font-family: 'Montserrat', sans-serif;
+    color: var(--text-color);
+    background-color: var(--secondary-color);
+    line-height: 1.6;
+    margin: 0;
+    /* Animação suave ao fazer scroll */
+    scroll-behavior: smooth;
+    overflow-x: hidden; /* Evita a barra de scroll horizontal */
+}
+
+h1, h2, h3 {
+    font-family: 'Dancing Script', cursive;
+    color: var(--text-color);
+    text-align: center;
+    line-height: 1.2;
+}
+
+h1 {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+h2 {
+    font-size: 3rem;
+    margin-bottom: 3rem;
+}
+
+/* --- Header e Menu de Navegação --- */
+.main-header {
+    background-color: transparent;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    padding: 1rem 5%;
+    transition: background-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.main-header.scrolled {
+    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.5rem;
+    color: var(--text-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.logo:hover {
+    color: var(--primary-color);
+}
+
+.nav-links a {
+    color: var(--text-color);
+    text-decoration: none;
+    margin-left: 2rem;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: var(--primary-color);
+}
+
+.nav-icons {
+    display: flex;
+    align-items: center;
+}
+
+.cart-icon {
+    font-size: 1.5rem;
+    color: var(--text-color);
+    text-decoration: none;
+    position: relative;
+    transition: transform 0.3s ease;
+}
+
+.cart-icon:hover {
+    transform: scale(1.1);
+}
+
+.cart-count {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: var(--primary-color);
+    color: #fff;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+/* --- Menu Hamburger (Oculto em desktop) --- */
+.hamburger-menu {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    margin-left: 20px;
+    z-index: 1001;
+}
+
+.hamburger-menu span {
+    height: 3px;
+    width: 25px;
+    background: var(--text-color);
+    margin-bottom: 4px;
+    border-radius: 5px;
+    transition: all 0.3s ease-in-out;
+}
+
+.hamburger-menu.open span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger-menu.open span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger-menu.open span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* --- Seções da Página --- */
+.hero-section {
+    background-image: url('../images/hero-banner.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #fff;
+    position: relative;
+    padding: 0 5%;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 1s forwards;
+    animation-delay: 0.5s;
+}
+
+.cta-button, .category-button, .add-to-cart-button {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 1rem 2.5rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    border: none;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.cta-button:hover, .category-button:hover, .add-to-cart-button:hover {
+    background-color: #d35400;
+    transform: translateY(-2px);
+}
+
+/* Estilos de Seções Genéricas */
+.categories-section, .bestsellers-section, .products-collection, .about-us-section, .contact-section {
+    padding: var(--padding-section);
+}
+
+/* Grid para Cartões de Categorias e Produtos */
+.category-grid, .products-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+}
+
+.category-card, .product-card {
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    text-align: center;
+    padding: 2rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    /* Animação ao fazer scroll */
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.category-card.fade-in, .product-card.fade-in {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.category-card:hover, .product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.category-card img, .product-card img {
+    width: 100%;
+    max-height: 250px;
+    object-fit: cover;
+    border-radius: var(--border-radius);
+    margin-bottom: 1.5rem;
+}
+
+.product-card p.price {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+}
+
+/* --- Estilos para a página de Produtos --- */
+.products-collection h2 {
+    margin-bottom: 1rem;
+}
+
+.filters {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 3rem;
+}
+
+.filters select {
+    padding: 0.5rem;
+    border-radius: 8px;
+    border: 1px solid var(--text-color);
+    font-family: 'Montserrat', sans-serif;
+    color: var(--text-color);
+    background-color: white;
+}
+
+/* --- Estilos para a página Sobre Nós --- */
+.about-us-section {
+    text-align: center;
+}
+
+.about-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3rem;
+}
+
+.about-text {
+    max-width: 800px;
+}
+
+.about-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+/* --- Estilos para a página Contactos --- */
+.contact-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.contact-form-container {
+    background-color: var(--card-bg);
+    padding: 3rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    width: 100%;
+    max-width: 600px;
+}
+
+.contact-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.contact-form input, .contact-form textarea {
+    width: 100%;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.contact-form button {
+    width: 100%;
+}
+
+/* --- Footer --- */
+.main-footer {
+    background-color: var(--text-color);
+    color: var(--secondary-color);
+    text-align: center;
+    padding: 2rem;
+}
+
+/* --- Animações --- */
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- Responsividade (mobile-first) --- */
+@media (max-width: 768px) {
+    .navbar {
+        flex-wrap: wrap;
+    }
+
+    .nav-links {
+        display: none;
+        width: 100%;
+        text-align: center;
+        margin-top: 1rem;
+        flex-direction: column;
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .nav-links a {
+        display: block;
+        margin: 1rem 0;
+    }
+
+    .hamburger-menu {
+        display: flex;
+    }
+
+    .logo {
+        font-size: 2rem;
+    }
+
+    h1 {
+        font-size: 2.5rem;
+    }
+
+    h2 {
+        font-size: 2rem;
+    }
+    
+    .category-grid, .products-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .filters {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .about-content {
+        gap: 2rem;
+    }
+}
