@@ -18,19 +18,57 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- Gestão de Produtos e Carrinho ---
+    // --- Gestão de Produtos e Carrinho (Funções partilhadas) ---
     const productsGrid = document.getElementById('bestsellers-list');
     const allProductsGrid = document.getElementById('all-products-list');
     const cartCountElement = document.querySelector('.cart-count');
     const cartIcon = document.querySelector('.cart-icon');
 
-    // Função para atualizar a contagem do carrinho na interface
+    // Funções de animação e gestão do carrinho
     const updateCartCount = () => {
         const cart = JSON.parse(localStorage.getItem('cart')) || [];
         cartCountElement.textContent = cart.length;
     };
 
-    // Função para renderizar um produto
+    const addToCart = (product) => {
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const existingItem = cart.find(item => item.id === product.id);
+
+        if (existingItem) {
+            existingItem.quantity++;
+        } else {
+            cart.push({ ...product, quantity: 1 });
+        }
+        localStorage.setItem('cart', JSON.stringify(cart));
+        updateCartCount();
+    };
+
+    const animateToCart = (productElement) => {
+        const productImg = productElement.querySelector('img');
+        const cartRect = cartIcon.getBoundingClientRect();
+        const imgRect = productImg.getBoundingClientRect();
+
+        const clone = productImg.cloneNode(true);
+        clone.classList.add('product-clone');
+        clone.style.left = `${imgRect.left}px`;
+        clone.style.top = `${imgRect.top}px`;
+        clone.style.width = `${imgRect.width}px`;
+        clone.style.height = `${imgRect.height}px`;
+
+        document.body.appendChild(clone);
+
+        clone.offsetHeight; // Força o navegador a recalcular os estilos
+
+        document.documentElement.style.setProperty('--cart-x', `${cartRect.left - imgRect.left}px`);
+        document.documentElement.style.setProperty('--cart-y', `${cartRect.top - imgRect.top}px`);
+
+        clone.classList.add('fly-to-cart');
+
+        setTimeout(() => {
+            clone.remove();
+        }, 800);
+    };
+
     const renderProduct = (product, container) => {
         const productCard = document.createElement('div');
         productCard.className = 'product-card';
@@ -51,51 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    // Função para adicionar um produto ao carrinho (salva no localStorage)
-    const addToCart = (product) => {
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
-        const existingItem = cart.find(item => item.id === product.id);
-
-        if (existingItem) {
-            existingItem.quantity++;
-        } else {
-            cart.push({ ...product, quantity: 1 });
-        }
-        localStorage.setItem('cart', JSON.stringify(cart));
-        updateCartCount();
-    };
-
-    // Animação de "voo" para o carrinho
-    const animateToCart = (productElement) => {
-        const productImg = productElement.querySelector('img');
-        const cartRect = cartIcon.getBoundingClientRect();
-        const imgRect = productImg.getBoundingClientRect();
-
-        const clone = productImg.cloneNode(true);
-        clone.classList.add('product-clone');
-        clone.style.left = `${imgRect.left}px`;
-        clone.style.top = `${imgRect.top}px`;
-        clone.style.width = `${imgRect.width}px`;
-        clone.style.height = `${imgRect.height}px`;
-
-        document.body.appendChild(clone);
-
-        // Força o navegador a recalcular os estilos para a transição
-        clone.offsetHeight;
-
-        // Calcula a posição do carrinho
-        document.documentElement.style.setProperty('--cart-x', `${cartRect.left - imgRect.left}px`);
-        document.documentElement.style.setProperty('--cart-y', `${cartRect.top - imgRect.top}px`);
-
-        clone.classList.add('fly-to-cart');
-
-        // Remove o clone depois da animação
-        setTimeout(() => {
-            clone.remove();
-        }, 800);
-    };
-
-    // Carregar e renderizar os produtos
+    // Função para carregar e renderizar os produtos
     const loadProducts = async () => {
         try {
             const response = await fetch('data/products.json');
@@ -115,9 +109,100 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Chamar a função para carregar os produtos ao iniciar a página
-    loadProducts();
+    // --- Lógica da Página do Carrinho (se estivermos nela) ---
+    const cartItemsContainer = document.getElementById('cart-items');
+    const subtotalElement = document.getElementById('subtotal');
+    const totalElement = document.getElementById('total');
 
-    // Atualizar a contagem do carrinho ao carregar a página
+    const renderCartItems = () => {
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        cartItemsContainer.innerHTML = '';
+        if (cart.length === 0) {
+            cartItemsContainer.innerHTML = '<p>O seu carrinho está vazio.</p>';
+            const cartSummary = document.getElementById('cart-summary');
+            if (cartSummary) cartSummary.style.display = 'none';
+        } else {
+            const cartSummary = document.getElementById('cart-summary');
+            if (cartSummary) cartSummary.style.display = 'block';
+            cart.forEach(item => {
+                const cartItemElement = document.createElement('div');
+                cartItemElement.className = 'cart-item';
+                cartItemElement.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}">
+                    <div class="item-details">
+                        <h4>${item.name}</h4>
+                        <p class="price">${item.price.toLocaleString('pt-PT', { style: 'currency', currency: 'EUR' })}</p>
+                        <div class="item-quantity-controls">
+                            <button class="quantity-btn decrease-btn" data-id="${item.id}">-</button>
+                            <span class="item-quantity">${item.quantity}</span>
+                            <button class="quantity-btn increase-btn" data-id="${item.id}">+</button>
+                        </div>
+                    </div>
+                    <button class="remove-item-btn" data-id="${item.id}">Remover</button>
+                `;
+                cartItemsContainer.appendChild(cartItemElement);
+            });
+            setupCartEventListeners();
+        }
+        updateTotals();
+        updateCartCount();
+    };
+
+    const setupCartEventListeners = () => {
+        document.querySelectorAll('.increase-btn').forEach(button => {
+            button.addEventListener('click', (e) => {
+                let cart = JSON.parse(localStorage.getItem('cart')) || [];
+                const productId = e.target.dataset.id;
+                const item = cart.find(i => i.id === productId);
+                if (item) {
+                    item.quantity++;
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                    renderCartItems();
+                }
+            });
+        });
+
+        document.querySelectorAll('.decrease-btn').forEach(button => {
+            button.addEventListener('click', (e) => {
+                let cart = JSON.parse(localStorage.getItem('cart')) || [];
+                const productId = e.target.dataset.id;
+                const item = cart.find(i => i.id === productId);
+                if (item && item.quantity > 1) {
+                    item.quantity--;
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                    renderCartItems();
+                }
+            });
+        });
+
+        document.querySelectorAll('.remove-item-btn').forEach(button => {
+            button.addEventListener('click', (e) => {
+                let cart = JSON.parse(localStorage.getItem('cart')) || [];
+                const productId = e.target.dataset.id;
+                cart = cart.filter(item => item.id !== productId);
+                localStorage.setItem('cart', JSON.stringify(cart));
+                renderCartItems();
+            });
+        });
+    };
+
+    const updateTotals = () => {
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+        const total = subtotal;
+
+        if (subtotalElement) {
+            subtotalElement.textContent = subtotal.toLocaleString('pt-PT', { style: 'currency', currency: 'EUR' });
+        }
+        if (totalElement) {
+            totalElement.textContent = total.toLocaleString('pt-PT', { style: 'currency', currency: 'EUR' });
+        }
+    };
+
+    // Iniciar
+    loadProducts();
     updateCartCount();
+    if (document.body.id === 'cart-page') {
+        renderCartItems();
+    }
 });
