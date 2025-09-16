@@ -1,1 +1,110 @@
-
+[
+  {
+    "id": "1",
+    "name": "Caneca de Cerâmica",
+    "description": "Perfeita para o seu chá ou café.",
+    "price": 19.99,
+    "image": "images/caneca-fantasma.jpg",
+    "isBestseller": true,
+    "category": "Texteis"
+  },
+  {
+    "id": "2",
+    "name": "Vela Aromática",
+    "description": "Crie um ambiente acolhedor e relaxante.",
+    "price": 15.50,
+    "image": "images/vela-aromatica.jpg",
+    "isBestseller": true,
+    "category": "Velas & Aromas"
+  },
+  {
+    "id": "3",
+    "name": "Cobertor Aconchegante",
+    "description": "A peça essencial para noites frias.",
+    "price": 79.99,
+    "image": "images/cobertor-aboboras.jpg",
+    "isBestseller": true,
+    "category": "Texteis"
+  },
+  {
+    "id": "4",
+    "name": "Almofada Decorativa",
+    "description": "Toque suave e design encantador.",
+    "price": 25.00,
+    "image": "images/almofada-abobora.jpg",
+    "isBestseller": false,
+    "category": "Decoracao"
+  },
+  {
+    "id": "5",
+    "name": "Vela Aromatizada",
+    "description": "Com notas de canela e abóbora.",
+    "price": 35.00,
+    "image": "images/vela-pumpkin.jpg",
+    "isBestseller": false,
+    "category": "Velas & Aromas"
+  },
+  {
+    "id": "6",
+    "name": "Decoração de Parede",
+    "description": "Ideal para a entrada da casa.",
+    "price": 45.00,
+    "image": "images/decoracao-parede.jpg",
+    "isBestseller": false,
+    "category": "Decoracao"
+  },
+  {
+    "id": "7",
+    "name": "Saco Reutilizável",
+    "description": "Transporte os seus produtos com estilo.",
+    "price": 8.50,
+    "image": "images/saco-reutilizavel.jpg",
+    "isBestseller": false,
+    "category": "Texteis"
+  },
+  {
+    "id": "8",
+    "name": "Aromatizador de Ambiente",
+    "description": "Fragrância de laranja e especiarias.",
+    "price": 18.00,
+    "image": "images/aromatizador.jpg",
+    "isBestseller": false,
+    "category": "Velas & Aromas"
+  },
+  {
+    "id": "9",
+    "name": "Guirlanda de Outono",
+    "description": "Bem-vindos à estação mágica.",
+    "price": 65.00,
+    "image": "images/guirlanda-outono.jpg",
+    "isBestseller": false,
+    "category": "Decoracao"
+  },
+  {
+    "id": "10",
+    "name": "Conjunto de Chá",
+    "description": "Para momentos aconchegantes a dois.",
+    "price": 55.00,
+    "image": "images/conjunto-cha.jpg",
+    "isBestseller": false,
+    "category": "Texteis"
+  },
+  {
+    "id": "11",
+    "name": "Porta-chaves de Folha",
+    "description": "Um toque de outono nas suas chaves.",
+    "price": 9.99,
+    "image": "images/porta-chaves.jpg",
+    "isBestseller": false,
+    "category": "Decoracao"
+  },
+  {
+    "id": "12",
+    "name": "Cobertor Folhas",
+    "description": "Design elegante para qualquer divisão.",
+    "price": 12.00,
+    "image": "images/cobertor-folhas.jpg",
+    "isBestseller": false,
+    "category": "Texteis"
+  }
+]
