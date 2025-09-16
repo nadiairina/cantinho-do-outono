@@ -29,31 +29,50 @@ h1, h2, h3 {
     line-height: 1.2;
 }
 
-h1 {
-    font-size: 4rem;
-    margin-bottom: 1rem;
+h1 { font-size: 3rem; margin-bottom: 1rem; }
+h2 { font-size: 2.5rem; margin-bottom: 2rem; }
+h3 { font-size: 1.8rem; margin-bottom: 1rem; }
+
+a {
+    text-decoration: none;
+    color: var(--primary-color);
+    transition: color 0.3s ease;
 }
 
-h2 {
-    font-size: 3rem;
-    margin-bottom: 3rem;
+a:hover {
+    color: #c0631f;
 }
 
-/* --- Header e Menu de Navegação --- */
+/* --- Botão Call-to-Action (CTA) --- */
+.cta-button {
+    display: inline-block;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.cta-button:hover {
+    background-color: #c0631f;
+    transform: translateY(-3px);
+}
+
+/* --- Header e Navbar --- */
 .main-header {
-    background-color: transparent;
-    position: fixed;
-    width: 100%;
-    top: 0;
-    left: 0;
-    z-index: 1000;
+    background-color: var(--secondary-color);
     padding: 1rem 5%;
-    transition: background-color 0.4s ease, box-shadow 0.4s ease;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    transition: background-color 0.3s ease;
 }
 
 .main-header.scrolled {
-    background-color: rgba(255, 255, 255, 0.95);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: rgba(245, 245, 220, 0.95);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .navbar {
@@ -64,236 +83,219 @@ h2 {
 
 .logo {
     font-family: 'Dancing Script', cursive;
-    font-size: 2.5rem;
+    font-size: 2.2rem;
     color: var(--text-color);
-    text-decoration: none;
-    transition: color 0.3s ease;
 }
 
-.logo:hover {
-    color: var(--primary-color);
+.nav-links {
+    display: flex;
+    gap: 1.5rem;
 }
 
 .nav-links a {
+    font-weight: bold;
     color: var(--text-color);
-    text-decoration: none;
-    margin-left: 2rem;
-    font-weight: 500;
-    transition: color 0.3s ease;
+    transition: color 0.3s ease, transform 0.3s ease;
 }
 
 .nav-links a:hover {
     color: var(--primary-color);
+    transform: translateY(-2px);
 }
 
 .nav-icons {
     display: flex;
     align-items: center;
+    gap: 1.5rem;
 }
 
 .cart-icon {
     font-size: 1.5rem;
-    color: var(--text-color);
-    text-decoration: none;
     position: relative;
-    transition: transform 0.3s ease;
-}
-
-.cart-icon:hover {
-    transform: scale(1.1);
+    color: var(--text-color);
 }
 
 .cart-count {
-    position: absolute;
-    top: -8px;
-    right: -8px;
     background-color: var(--primary-color);
-    color: #fff;
-    border-radius: 50%;
-    padding: 2px 6px;
-    font-size: 0.8rem;
+    color: white;
+    font-size: 0.7rem;
     font-weight: bold;
+    border-radius: 50%;
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    min-width: 15px;
+    height: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-/* --- Menu Hamburger (Oculto em desktop) --- */
 .hamburger-menu {
     display: none;
     flex-direction: column;
+    gap: 5px;
     cursor: pointer;
-    margin-left: 20px;
-    z-index: 1001;
 }
 
 .hamburger-menu span {
-    height: 3px;
     width: 25px;
-    background: var(--text-color);
-    margin-bottom: 4px;
-    border-radius: 5px;
-    transition: all 0.3s ease-in-out;
+    height: 3px;
+    background-color: var(--text-color);
+    transition: transform 0.3s ease;
 }
 
-.hamburger-menu.open span:nth-child(1) {
-    transform: rotate(45deg) translate(5px, 5px);
-}
-
-.hamburger-menu.open span:nth-child(2) {
-    opacity: 0;
-}
-
-.hamburger-menu.open span:nth-child(3) {
-    transform: rotate(-45deg) translate(5px, -5px);
-}
-
-/* --- Seções da Página --- */
-.hero-section {
-    background-image: url('../images/hero-banner.jpg');
-    background-size: cover;
-    background-position: center;
+/* --- Seções do Conteúdo --- */
+.hero {
     height: 80vh;
+    background: url('images/hero-outono.jpg') no-repeat center center/cover;
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
-    color: #fff;
-    position: relative;
-    padding: 0 5%;
-}
-
-.hero-section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.4);
+    color: white;
 }
 
 .hero-content {
-    position: relative;
-    z-index: 1;
-    opacity: 0;
-    transform: translateY(20px);
-    animation: fadeIn 1s forwards;
-    animation-delay: 0.5s;
+    background-color: rgba(79, 54, 31, 0.7);
+    padding: 2rem;
+    border-radius: 12px;
 }
 
-.cta-button, .category-button, .add-to-cart-button {
-    background-color: var(--primary-color);
+.hero h1 {
     color: white;
-    padding: 1rem 2.5rem;
-    border-radius: 50px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    border: none;
-    cursor: pointer;
-    display: inline-block;
+    font-size: 4rem;
+    margin-bottom: 0.5rem;
 }
 
-.cta-button:hover, .category-button:hover, .add-to-cart-button:hover {
-    background-color: #d35400;
-    transform: translateY(-2px);
+.hero p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
 }
 
-/* Estilos de Seções Genéricas */
 .categories-section, .bestsellers-section, .products-collection, .about-us-section, .contact-section {
     padding: var(--padding-section);
+    text-align: center;
 }
 
-/* Grid para Cartões de Categorias e Produtos */
 .category-grid, .products-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 2rem;
+    margin-top: 2rem;
 }
 
 .category-card, .product-card {
     background-color: var(--card-bg);
     border-radius: var(--border-radius);
+    overflow: hidden;
     box-shadow: var(--box-shadow);
-    text-align: center;
-    padding: 2rem;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    /* Animação ao fazer scroll */
+    animation: fadeIn 0.8s forwards;
     opacity: 0;
     transform: translateY(20px);
 }
 
-.category-card.fade-in, .product-card.fade-in {
-    opacity: 1;
-    transform: translateY(0);
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-}
-
 .category-card:hover, .product-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
 .category-card img, .product-card img {
     width: 100%;
-    max-height: 250px;
+    height: 250px;
     object-fit: cover;
-    border-radius: var(--border-radius);
-    margin-bottom: 1.5rem;
 }
 
-.product-card p.price {
-    font-size: 1.1rem;
+.category-card h3, .product-card h3 {
+    margin: 1rem 0 0.5rem;
+}
+
+.category-card p, .product-card p {
+    padding: 0 1rem;
+    margin: 0;
+}
+
+.product-card .price {
+    font-size: 1.3rem;
     font-weight: bold;
-    margin-bottom: 1rem;
     color: var(--primary-color);
+    margin-top: 1rem;
 }
 
-/* --- Estilos para a página de Produtos --- */
-.products-collection h2 {
-    margin-bottom: 1rem;
+.add-to-cart-btn {
+    display: block;
+    width: calc(100% - 2rem);
+    background-color: var(--text-color);
+    color: white;
+    padding: 0.8rem;
+    border: none;
+    cursor: pointer;
+    margin: 1rem;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.add-to-cart-btn:hover {
+    background-color: #38281a;
+}
+
+/* --- Seção de Filtros (Página de Produtos) --- */
+.products-collection h2, .filters {
+    text-align: left;
+    margin-left: 5%;
 }
 
 .filters {
     display: flex;
-    justify-content: center;
+    gap: 1.5rem;
     align-items: center;
-    gap: 1rem;
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
+    font-size: 1rem;
 }
 
 .filters select {
     padding: 0.5rem;
     border-radius: 8px;
-    border: 1px solid var(--text-color);
+    border: 1px solid #ccc;
     font-family: 'Montserrat', sans-serif;
-    color: var(--text-color);
-    background-color: white;
 }
 
-/* --- Estilos para a página Sobre Nós --- */
+/* --- Seção Sobre Nós --- */
 .about-us-section {
-    text-align: center;
+    text-align: left;
 }
 
 .about-content {
     display: flex;
-    flex-direction: column;
-    align-items: center;
     gap: 3rem;
+    align-items: center;
 }
 
 .about-text {
-    max-width: 800px;
+    flex: 1;
+}
+
+.about-text p {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+}
+
+.about-image {
+    flex: 1;
+    text-align: center;
 }
 
 .about-image img {
     max-width: 100%;
-    height: auto;
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
 }
 
-/* --- Estilos para a página Contactos --- */
+/* --- Seção de Contactos --- */
 .contact-section {
+    padding: var(--padding-section);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -301,7 +303,7 @@ h2 {
 
 .contact-form-container {
     background-color: var(--card-bg);
-    padding: 3rem;
+    padding: 2rem;
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
     width: 100%;
@@ -366,33 +368,33 @@ h2 {
         margin: 1rem 0;
     }
 
+    .nav-icons {
+        margin-left: auto;
+    }
+
     .hamburger-menu {
         display: flex;
     }
-
-    .logo {
-        font-size: 2rem;
+    
+    .hero {
+        height: 50vh;
     }
 
-    h1 {
+    .hero-content {
+        padding: 1.5rem;
+    }
+
+    .hero h1 {
         font-size: 2.5rem;
     }
 
-    h2 {
-        font-size: 2rem;
-    }
-    
-    .category-grid, .products-grid {
-        grid-template-columns: 1fr;
+    .about-content {
+        flex-direction: column;
     }
 
     .filters {
         flex-direction: column;
         align-items: flex-start;
         gap: 0.5rem;
-    }
-
-    .about-content {
-        gap: 2rem;
     }
 }
