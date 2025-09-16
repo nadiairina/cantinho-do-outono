@@ -1,36 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // --- Funcionalidade do Menu Hamburger ---
-    const hamburgerMenu = document.getElementById('hamburgerMenu');
-    const navLinks = document.getElementById('navLinks');
-    const nav = document.querySelector('.navbar');
-
-    hamburgerMenu.addEventListener('click', () => {
-        navLinks.classList.toggle('active');
-    });
-
-    // Animação do header ao scroll
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-            nav.classList.add('scrolled');
-        } else {
-            nav.classList.remove('scrolled');
-        }
-    });
-
-    // --- Gestão de Produtos e Carrinho ---
     const productsGrid = document.getElementById('bestsellers-list');
     const allProductsGrid = document.getElementById('all-products-list');
     const cartCountElement = document.querySelector('.cart-count');
 
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-    // Função para atualizar a contagem do carrinho na interface
     const updateCartCount = () => {
         cartCountElement.textContent = cart.length;
     };
 
-    // Função para renderizar um produto
     const renderProduct = (product, container) => {
         const productCard = document.createElement('div');
         productCard.className = 'product-card';
@@ -38,26 +17,21 @@ document.addEventListener('DOMContentLoaded', () => {
             <img src="${product.image}" alt="${product.name}">
             <h3>${product.name}</h3>
             <p>${product.description}</p>
-            <p class="price">€${product.price.toFixed(2).replace('.', ',')}</p>
-            <button class="add-to-cart-button" data-id="${product.id}">Adicionar ao Carrinho</button>
+            <p class="price">${product.price.toLocaleString('pt-PT', { style: 'currency', currency: 'EUR' })}</p>
+            <button class="add-to-cart-btn" data-id="${product.id}">Adicionar ao Carrinho</button>
         `;
         container.appendChild(productCard);
 
-        // Adicionar evento ao botão de "Adicionar ao Carrinho"
-        const addButton = productCard.querySelector('.add-to-cart-button');
-        addButton.addEventListener('click', () => {
+        productCard.querySelector('.add-to-cart-btn').addEventListener('click', () => {
             addToCart(product);
         });
     };
 
-    // Adicionar um produto ao carrinho
     const addToCart = (product) => {
         const existingItem = cart.find(item => item.id === product.id);
         if (existingItem) {
-            // Se o produto já existe, apenas aumenta a quantidade
             existingItem.quantity++;
         } else {
-            // Se o produto não existe, adiciona-o com quantidade 1
             cart.push({ ...product, quantity: 1 });
         }
         localStorage.setItem('cart', JSON.stringify(cart));
@@ -65,19 +39,20 @@ document.addEventListener('DOMContentLoaded', () => {
         alert(`${product.name} adicionado ao carrinho!`);
     };
 
-    // Carregar e renderizar os produtos
     const loadProducts = async () => {
         try {
             const response = await fetch('data/products.json');
+            if (!response.ok) {
+                throw new Error(`Erro HTTP! status: ${response.status}`);
+            }
             const products = await response.json();
+            console.log('Produtos carregados com sucesso:', products); // Verifica se os produtos foram carregados
 
-            // Renderizar os "Mais Vendidos" na página principal
             if (productsGrid) {
                 const bestsellers = products.filter(p => p.isBestseller);
                 bestsellers.forEach(product => renderProduct(product, productsGrid));
             }
 
-            // Renderizar todos os produtos na página de produtos
             if (allProductsGrid) {
                 products.forEach(product => renderProduct(product, allProductsGrid));
             }
@@ -87,9 +62,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Chamar a função para carregar os produtos ao iniciar a página
     loadProducts();
-
-    // Atualizar a contagem do carrinho ao carregar a página
     updateCartCount();
 });
